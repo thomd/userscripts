@@ -1,0 +1,29 @@
+// ==UserScript==
+// @name          userscript updater
+// @namespace     http://thomd.net/userscript
+// @description   Implement this updater within your userscripts hosted on userscripts.org
+// @include       http://*
+// @include       https://*
+// @author        Thomas Duerr
+// @version       2.0
+// @date          2009-03-09
+// @depricated    true
+// ==/UserScript==
+
+
+//
+// xpath helper
+//
+function $x(p, context){
+	contextNode = context || document;
+	var i, arr = [], xpr = document.evaluate(p, contextNode, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+	for (i = 0; item = xpr.snapshotItem(i); i++) arr.push(item);
+	return arr;
+}
+
+//
+// firebug-logging helper
+//
+if(unsafeWindow.console){
+	var GM_log = unsafeWindow.console.log;
+}

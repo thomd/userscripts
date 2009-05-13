@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>updater.user.js tests</title>
+    
+    <script type="text/javascript">
+  
+      var isNewer = function(o, p){
+        /(\d+)\.(\d+)(?:\.(\d+))?\|(\d+)\.(\d+)(?:\.(\d+))?/.exec(o + "|" + p);
+        with(RegExp){
+          if(parseInt($4 || "0") < parseInt($1 || "0")) return true;
+          if(parseInt($5 || "0") < parseInt($2 || "0")) return true;
+          if(parseInt($6 || "0") < parseInt($3 || "0")) return true;
+        }
+        return false;
+      }
+  
+      // Simple true-like/false-like testing
+      fireunit.ok(isNewer("0.7", "0.18"), "0.7 is newer than 0.18");
+      fireunit.ok(isNewer("1.1", "1.0"), "1.1 is newer than 1.0");
+      fireunit.ok(isNewer("0.2", "0.1.1"), "0.2 is newer than 0.1.1");
+      fireunit.ok(isNewer("1.1", "0.6"), "1.1 is newer than 0.6");
+      fireunit.ok(isNewer("1.1.13", "1.1"), "1.1.13 is newer than 1.1");
+      fireunit.ok(isNewer("0.1.2", "0.1.1"), "0.1.2 is newer than 0.1.1");
+      fireunit.ok(isNewer("10.0", "9.9.9"), "10.0 is newer than 9.9.9");
+      fireunit.ok(isNewer("10.10", "10.9.99"), "10.10 is newer than 10.9.99");
+      fireunit.ok(isNewer("10.10.100", "10.10.99"), "10.10.100 is newer than 10.10.99");
+      fireunit.ok(isNewer("2.0", "1.13.1"), "2.0 is newer than 1.13.1");
+      fireunit.ok(isNewer("1.0.1", "0.33"), "1.0.1 is newer than 0.33");
+  
+      // Display the total results
+      fireunit.testDone();
+      
+    </script>
+  </head>
+  <body>
+    <p>Run tests using <a href="http://fireunit.org/">fireunit</a> extension for <a href="http://getfirebug.com/">firebug</a>.</p>
+    <p>See test-results below!</p>
+  </body>
+</html>
+
+

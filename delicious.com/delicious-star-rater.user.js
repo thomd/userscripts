@@ -7,9 +7,9 @@
 // @include       http://delicious.com/*
 // @include       http://*.delicious.com/*
 // @author        Thomas Duerr
-// @version       0.9
-// @date          2009-03-27
-// @change        minor layout bugfix for flickr bookmarks.
+// @version       0.10
+// @date          2009-08-04
+// @change        minor layout bugfix due to new feature for sending links.
 // ==/UserScript==
 
 
@@ -88,7 +88,7 @@ var StarRater = function(type){
         css_rater += ".ratingfield li.ratinghigh {color: #3274D0;}";
         css_rater += ".ratingfield li.rated {color: #666;}";
         css_rater += "#saveitem .ratingfield label {padding: 4px 0 0;}";
-        css_rater += ".ratingfield span.hint {color: #888; font-size: 84%; display: block; padding: 4px 0 0; float: left; width: 120px;}";
+        css_rater += ".ratingfield span.hint {color: #888; font-size: 84%; display: block; padding: 4px 0 0; width: 100%; height: 16px;}";
         css_rater += ".ratingfield span.remove {display: none; font-size: 84%; padding: 4px 0 0; float: left; cursor: pointer; color:#1462C1; margin-right: 11px;}";
         css_rater += ".inlineeditor .ratingfield label {padding: 1px 0 0;}";
 
@@ -380,15 +380,17 @@ if(document.getElementById("newitem")){
 
 //
 // ChangeLog
-// 2008-11-02 - 0.1 - created
-// 2008-11-10 - 0.2 - refactoring: rating is now implemented with module-pattern (singleton).
-// 2008-11-12 - 0.3 - problems with module-pattern fixed (delicious allowes multi inline-edits).
-// 2008-11-14 - 0.4 - rating is now possible in inline-edit mode.
-// 2008-11-20 - 0.5 - edit form shows now a remove-link if there is already a reating.
-// 2009-01-04 - 0.6 - correct height of posting popup to make complete tag list visible.
-// 2009-02-23 - 0.7 - integration of userscripts update notification.
-// 2009-02-24 - 0.8 - highlighting of rated bookmarks is now optional (thanks for the hint of Britta Gustafson (jeweledplatypus.org): "...the yellow highlighting isn’t necessary, but otherwise this is nice for people who want it...").
-// 2009-03-27 - 0.9 - minor layout bugfix for flickr bookmarks
+// 2008-11-02 - 0.1 -  created
+// 2008-11-10 - 0.2 -  refactoring: rating is now implemented with module-pattern (singleton).
+// 2008-11-12 - 0.3 -  problems with module-pattern fixed (delicious allowes multi inline-edits).
+// 2008-11-14 - 0.4 -  rating is now possible in inline-edit mode.
+// 2008-11-20 - 0.5 -  edit form shows now a remove-link if there is already a reating.
+// 2009-01-04 - 0.6 -  correct height of posting popup to make complete tag list visible.
+// 2009-02-23 - 0.7 -  integration of userscripts update notification.
+// 2009-02-24 - 0.8 -  highlighting of rated bookmarks is now optional.
+// 2009-03-27 - 0.9 -  minor layout bugfix for flickr bookmarks.
+// 2009-08-04 - 0.10 - minor layout bugfix due to new feature for sending links.
+
 
 
 
@@ -514,6 +516,6 @@ var userscriptUpdater = function(){
 // initialize updater
 userscriptUpdater.init({
     scriptId:       "36457",
-    currentVersion: "0.9",
+    currentVersion: "0.10",
     injectInto:     document.getElementById("pagetitle")
 });

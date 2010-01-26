@@ -7,8 +7,9 @@
 // @include       http://delicious.com/*
 // @include       http://*.delicious.com/*
 // @author        Thomas Duerr
-// @version       0.3
-// @date          2009-03-28
+// @version       0.4
+// @date          2010-01-26
+// @change        minor bugfix due to a changed html-structure. network info shows now again correct number of friends und users in own network.
 // ==/UserScript==
 
 
@@ -32,7 +33,7 @@ function $o2a(o){
 
 
 // get username
-var user = document.evaluate("id('signedInAs')", document, null, 9, null).singleNodeValue.textContent;
+var user = $x("id('globalnav')/li/strong/a")[0].textContent;
 
 if(user != null){
 
@@ -95,6 +96,7 @@ var addFans = function(fans){
 // 2008-03-06 - 0.1 - created
 // 2008-08-01 - 0.2 - support for new delicious-relaunch
 // 2009-03-28 - 0.3 - userscript updater added
+// 2010-01-26 - 0.4 - changed html-structure needs other xpath for parsing username
 
 
 
@@ -222,6 +224,6 @@ var userscriptUpdater = function(){
 // initialize updater
 userscriptUpdater.init({
     scriptId:       "23576",
-    currentVersion: "0.3",
+    currentVersion: "0.4",
     injectInto:     document.getElementById("pagetitle")
 });

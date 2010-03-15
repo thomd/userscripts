@@ -19,7 +19,7 @@
 // --------------------------------------------------------------------
 //
 // ==UserScript==
-// @name          Todoist Today
+// @name          todoist today
 // @namespace     http://thomd.net/userscript
 // @description   show number of todos for today in browser tab
 // @include       http://todoist.com/*

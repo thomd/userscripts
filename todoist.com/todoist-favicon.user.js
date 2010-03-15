@@ -1,4 +1,4 @@
-// Tofoist Favicon
+// todoist favicon
 // version 1.0
 // 2008-03-11
 // Copyright (c) 2008, Thomas Duerr

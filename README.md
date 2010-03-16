@@ -46,14 +46,14 @@ Usage
 			currentVersion: "1.0.2",
 			checkInterval:  604800,                              // check only once a week
 			injectInto:     document.getElementById("header"),   // inject updater-message into this DOM-node
-			updaterCss:     ""                                   // individual css rules (see 'Styling of updater-message' below)
+			updaterCss:     ""                                   // individual css rules (see 'Themes' below)
 		});
 
 4. You may optional define additional (non standard) userscript-meta tags `@change` and/or `@depricated` in your script. This information will then be used in an update-message as additional description.
 
-	**`@change`**:      what has been changed in the new version
+	`@change`:      what has been changed in the new version
 		
-	**`@depricated`**:  if userscript is depricated (the scripts site may have implemented your feature now, so the userscript isn't necessary anymore), then give a description or set to 'true'.
+	`@depricated`:  if userscript is depricated (the scripts site may have implemented your feature now, so the userscript isn't necessary anymore), then give a description or set to 'true'.
 
 
 Notes
@@ -84,7 +84,7 @@ Individual CSS rules should base on this exemplary generated HTML structure:
 			</div>
 			Greasemonkey UserScript Update Notification!
 		</h1>
-		<p>There is an update available for <a href="http://userscripts.org/scripts/show/12346">userscript updater</a>.<br/><br/>
+		<p>There is an update available for <a href="http://userscripts.org/scripts/show/12346">userscript updater</a>.<br/>
 			New Feature: this and that!<br/><br/>
 			You are currently running version <b>1.3</b>, the newest version on userscripts.org is <b>1.4.3</b>!<br/>
 			<a href="http://userscripts.org/scripts/source/12346.user.js">Update to Version 1.4.3</a>
@@ -99,13 +99,17 @@ For this you may use for example this set of CSS selectors:
 	div.greasemonkey_updater .greasemonkey_updater_link_to_hide {  }
 	div.greasemonkey_updater p {  }
 
-### Themes
+### Helvetica Theme
 
-#### Helvetica
+Copy [helvetica.css](http://github.com/thomd/userscripts/raw/master/userscript-updater/themes/helvetica.css "helvetica.css") into `updaterCss`.
 
+![Helvetica Theme](http://github.com/thomd/userscripts/raw/master/userscript-updater/themes/helvetica.png "Helvetica Theme")
 
-#### Red-Alert
+### Red-Alert Theme
 
+Copy [red-alert.css](http://github.com/thomd/userscripts/raw/master/userscript-updater/themes/red-alert.css "red-alert.css") into `updaterCss`.
+
+![Red-Alert Theme](http://github.com/thomd/userscripts/raw/master/userscript-updater/themes/red-alert.png "Red-Alert Theme")
 
 
 License

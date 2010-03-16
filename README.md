@@ -99,8 +99,17 @@ For this you may use for example this set of CSS selectors:
 	div.greasemonkey_updater .greasemonkey_updater_link_to_hide {  }
 	div.greasemonkey_updater p {  }
 
+### Themes
 
-### License:
-* MIT License (http://www.opensource.org/licenses/mit-license.php)
+#### Helvetica
+
+
+#### Red-Alert
+
+
+
+License
+-------
+MIT License (http://www.opensource.org/licenses/mit-license.php)
 
 

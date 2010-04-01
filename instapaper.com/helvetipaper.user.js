@@ -72,10 +72,12 @@ var attachCSS = function(css){
     var add_link = $x('//div[@id="paginationTop"]/a')[0];
     var folders_link = $x('//div[@id="folders"]//a')[0];
     var nav_links = $x('//h2[@id="categoryHeader"]/a');
+    var rss = $x('//link[@rel="alternate"]')[0];
 
 
-    // add dot
-    title.appendChild(document.createTextNode("."));
+    // add footnote-asterisk to title
+    title.appendChild(document.createTextNode(".*"));
+    title.setAttribute("href", location.href + "#footer");
 
 
     //
@@ -96,13 +98,17 @@ var attachCSS = function(css){
     //
 
     // fetch count-data from category pages via temporary iframe
-    var setCounts = function(href, callback){
+    var setCounts = function(href){
         if(top != window) return;    
         var iframe = document.createElement("iframe");
         iframe.setAttribute("src", "http://www.instapaper.com" + href.getAttribute("href"));
         iframe.addEventListener("load", function(){
-            var count = $ix('//*[@id="bookmark_list"]/div', window.frames[0].document).length;
-            callback(count);
+            var count = $ix('//*[@id="bookmark_list"]/div', window.frames[0].document).length;   // FIXME using windows.frames[0] is not reliable for more frames
+            if(count > 0){
+                var counter = document.createElement("sup");
+                counter.appendChild(document.createTextNode(count));
+                href.appendChild(counter);
+            }
             body.removeChild(iframe);
         }, false);
         body.appendChild(iframe);
@@ -119,13 +125,7 @@ var attachCSS = function(css){
     for(var i = 0, n = nav_links.length; i < n; i++){
         navigation.appendChild((function(){
             var href = nav_links[i];
-        	setCounts(href, function(count){
-                if(count > 0){
-                    var counter = document.createElement("sup");
-                    counter.appendChild(document.createTextNode(count));
-                    href.appendChild(counter);
-                }
-        	});
+        	setCounts(href);
             var category = document.createElement("div");
             category.setAttribute("class", "categorylink");
             category.appendChild(nav_links[i]);    
@@ -135,42 +135,47 @@ var attachCSS = function(css){
 
 
     //
-    // put page URL on top of link
+    // put page URL on top of link and reposition controls
     //
-    var links = $x('//div[@id="bookmark_list"]//div[@class="titleRow"]/a');
+    var links = $x('//div[@id="bookmark_list"]//div[starts-with(@id,"tableViewCell")]');
     for(i in links){
         var link = links[i];
-        var title = link.getAttribute("title");
+
+        // page URL
+        var page = $x('.//*[@class="titleRow"]/a', link)[0];
+        var title = page.getAttribute("title");
         var url = document.createElement("div");
         url.setAttribute("class", "titleUrl");
-        url.appendChild(document.createTextNode(title+":"));
-        link.parentNode.insertBefore(url, link);
+        url.appendChild(document.createTextNode(title + ":"));
+        page.parentNode.insertBefore(url, page);
+        
+        // action links (edit, delete)
+        var edit = $x('.//*[@class="secondaryControls"]/a[position()=1]', link)[0];
+        var del = $x('.//*[@class="secondaryControls"]/a[last()]', link)[0];
+        var controls = $x('.//*[@class="cornerControls"]', link)[0];
+        controls.appendChild(edit);
+        controls.appendChild(del);
     }
-
     
 
 
 
-/*
-    // create action links
-    add_link.replaceChild(document.createTextNode("Add Link"), add_link.firstChild);
-    navigation.appendChild(add_link);
-    navigation.appendChild(folders_link);
-    
+    // TODO replace stars with Unicode Character 'BLACK STAR' (U+2605)
+//    var stars = $x('//div[@id="bookmark_list"]//a[@class="starToggleUnstarred"]');
+//    for(star in stars){
+//        stars[star].innerHTML = "&#x2605;";
+//    }
 
 
 
 
 
-    // replace stars with Unicode Character 'BLACK STAR' (U+2605)
-    var stars = $x('//div[@id="bookmark_list"]//a[@class="starToggleUnstarred"]');
-    for(star in stars){
-//        console.log(stars[star].innerHTML);
-        stars[star].innerHTML = "&#x2605;";
-    }
-    //$x('//div[@id="bookmark_list"]//a[@class="starToggleStarred"]').each(function(star){star.innerHTML="&#x2605;"})
+    // put a New flag on the links from within the last seven days from now. For this the RSS feed is parsed.
+    // use this code: <a href="..."><span>New</span> This is the Link Name</a>
+    var rss_url = rss.getAttribute("href");
+    // TODO finish New-Flag
 
-*/
+
 
 })();
 
@@ -188,10 +193,10 @@ var css = ''+
 'h1#logo a{color:red;text-decoration:none;text-shadow:0 0 20px #AAA;}'+
 'h1#logo a:hover{text-decoration:none;background:red;color:#FFF;padding:0 0.2em;margin:0 -0.2em;text-shadow:none;}'+
 
-'#header div#userdata{display:block;float:right;font-size:16px;margin:5px 50px;padding:0;font-weight:bold;}'+
+'#header div#userdata{display:block;float:right;font-size:16px;margin-top:10px;padding:0;font-weight:bold;}'+
 '#header div#userdata span{margin-right:16px;}'+
-'#header div#userdata a{color:red;font-weight:bold;display:inline-block;}'+
-'#header div#userdata a:hover{text-decoration:none;background:red;color:#FFF;padding:2px 8px;margin:-2px -8px;}'+
+'#header div#userdata a{color:red;font-weight:bold;display:inline-block;width:120px;}'+
+'#header div#userdata a:hover{text-decoration:none;background:red;color:#FFF;padding:2px 0 2px 8px;margin:-2px 0 -2px -8px;}'+
 
 '#content h2#categoryHeader{color:#444;font-weight:bold;font-size:52px;line-height:1.5;font-family:Helvetica,sans-serif;letter-spacing:-2px;margin:0 50px;}'+
 '#content h2#categoryHeader span,h2#categoryHeader a{display:none}'+
@@ -206,19 +211,24 @@ var css = ''+
 
 'div#bookmark_list .tableViewCell{-moz-border-radius:0;border:none;border-top:12px solid #FFF;background:#F9F9F9;}'+
 'div#bookmark_list .tableViewCell:hover{background:#CCC;}'+
+'div#bookmark_list .cornerControls{margin-top:12px;}'+
 'div#bookmark_list .cornerControls .textButton{display:none;}'+
-'div#bookmark_list .cornerControls .archiveButton{font-weight:bold;font-size:16px;line-height:1.1;font-family:Helvetica,sans-serif;color:red;width:100px;margin:0;background:transparent;border:none;}'+
+'div#bookmark_list .cornerControls .archiveButton{display:none;}'+
+'div#bookmark_list .cornerControls .actionLink{font-weight:bold;font-size:16px;line-height:1.1;font-family:Helvetica,sans-serif;color:red;width:100px;margin:0;background:transparent;border:none;display:inline-block;padding:5px;text-align:left;color:#CCC !important;}'+
+'div#bookmark_list .tableViewCell:hover .cornerControls .actionLink:hover{text-decoration:none;background:red;color:#FFF !important;padding:7px 13px 5px;margin:-2px -8px 0px;}'+
 
 'div#bookmark_list .starBox{float:right;display:none;}'+
 'div#bookmark_list .starBox a.starToggleUnstarred{font-size:300%;color:#DDD;}'+
 'div#bookmark_list .starBox a.starToggleStarred{font-size:300%;color:red;}'+
 'div#bookmark_list .titleUrl{font-weight:bold;font-size:36px;line-height:1.1;font-family:Helvetica,sans-serif;color:#CCC;width:none;margin:10px 0 0 240px;display:block;}'+
 'div#bookmark_list .tableViewCell:hover .titleUrl{color:#F9F9F9}'+
+'div#bookmark_list .tableViewCell:hover .cornerControls .actionLink{color:red !important;}'+
 'div#bookmark_list .titleRow{width:100%;margin-left:-200px;padding:0;}'+
 'div#bookmark_list .titleRow a.tableViewCellTitleLink{font-weight:bold;font-size:36px;line-height:1.1;font-family:Helvetica,sans-serif;color:#444;width:none;margin-left:240px;display:block;}'+
 'div#bookmark_list .titleRow a.tableViewCellTitleLink:hover{text-decoration:none;}'+
+'div#bookmark_list .titleRow a.tableViewCellTitleLink span{-moz-border-radius:10px;background:#444;color:#FFF;padding:5px 10px 0;}'+
 'div#bookmark_list .titleRow div.summary{display:none;}'+
-'div#bookmark_list .secondaryControls span.host{display:none;}'+
+'div#bookmark_list .secondaryControls{display:none;}'+
 ''+
 ''+
 '';

@@ -97,15 +97,16 @@ var attachCSS = function(css){
     // create category links
     //
 
-    // fetch count-data from category pages via temporary iframe
+    // fetch count-data from category pages via temporary iframes
     var setCounts = function(href){
         if(top != window) return;    
         var iframe = document.createElement("iframe");
+        var name = "frame" + href.getAttribute("href").substr(1);
         iframe.setAttribute("src", "http://www.instapaper.com" + href.getAttribute("href"));
-        iframe.addEventListener("load", function(){
-            var count = $ix('//*[@id="bookmark_list"]/div', window.frames[0].document).length;   // FIXME using windows.frames[0] is not reliable for more frames
+        iframe.addEventListener("load", function(ev){
+            var count = $ix('//*[@id="bookmark_list"]/div', this.contentDocument).length;
             if(count > 0){
-                var counter = document.createElement("sup");
+               var counter = document.createElement("sup");
                 counter.appendChild(document.createTextNode(count));
                 href.appendChild(counter);
             }
@@ -211,7 +212,7 @@ var css = ''+
 
 'div#bookmark_list .tableViewCell{-moz-border-radius:0;border:none;border-top:12px solid #FFF;background:#F9F9F9;}'+
 'div#bookmark_list .tableViewCell:hover{background:#CCC;}'+
-'div#bookmark_list .cornerControls{margin-top:12px;}'+
+'div#bookmark_list .cornerControls{margin-top:6px;}'+
 'div#bookmark_list .cornerControls .textButton{display:none;}'+
 'div#bookmark_list .cornerControls .archiveButton{display:none;}'+
 'div#bookmark_list .cornerControls .actionLink{font-weight:bold;font-size:16px;line-height:1.1;font-family:Helvetica,sans-serif;color:red;width:100px;margin:0;background:transparent;border:none;display:inline-block;padding:5px;text-align:left;color:#CCC !important;}'+
@@ -229,11 +230,10 @@ var css = ''+
 'div#bookmark_list .titleRow a.tableViewCellTitleLink span{-moz-border-radius:10px;background:#444;color:#FFF;padding:5px 10px 0;}'+
 'div#bookmark_list .titleRow div.summary{display:none;}'+
 'div#bookmark_list .secondaryControls{display:none;}'+
-''+
-''+
 '';
 
 attachCSS(css);
+
 
 
 

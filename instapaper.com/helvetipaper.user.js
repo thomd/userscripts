@@ -60,7 +60,9 @@ var attachCSS = function(css){
 //
 ;(function(){
     
+    //
     // some helper nodes
+    //
     var body = $x('//body')[0];
     var header = $x('//*[@id="header"]')[0];
     var logo = $x('//*[@id="logo"]')[0];
@@ -101,7 +103,6 @@ var attachCSS = function(css){
     var setCounts = function(href){
         if(top != window) return;    
         var iframe = document.createElement("iframe");
-        var name = "frame" + href.getAttribute("href").substr(1);
         iframe.setAttribute("src", "http://www.instapaper.com" + href.getAttribute("href"));
         iframe.addEventListener("load", function(ev){
             var count = $ix('//*[@id="bookmark_list"]/div', this.contentDocument).length;
@@ -170,11 +171,45 @@ var attachCSS = function(css){
 
 
 
+    //
+    // put a New flag on the links from within the last week. 
+    // For this the RSS feed is parsed.
+    //
+	var oneWeek = 1000*60*60*24*7;
+	var twoWeeks = oneWeek*2;
+	var week = oneWeek;
+	
+    var parseRssFeed = function(response){
+        if (!response.responseXML) {
+            response.responseXML = new DOMParser().parseFromString(response.responseText, "text/xml");
+        }
+        var items = response.responseXML.getElementsByTagName("item");
+        var newLinks = [];
+        for(var i = 0, l = items.length; i < l; i++){
+            var pubDate = items[i].getElementsByTagName("pubDate")[0].textContent;
+            if((+new Date()) - (+new Date(pubDate)) < week){
+                var guid = items[i].getElementsByTagName("guid")[0].textContent;
+                newLinks.push(guid.replace(/^http:\/\/www\.instapaper\.com/, ""));
+            }
+        }
+        for(var n = 0, l = newLinks.length; n < l; n++){
+            var node = $x('//a[@href="'+newLinks[n]+'"]')[0];
+            var newFlag = document.createElement("span");
+            newFlag.appendChild(document.createTextNode("New"));
+            node.firstChild.insertData(0, " ");
+            node.insertBefore(newFlag, node.firstChild);
+        }
 
-    // put a New flag on the links from within the last seven days from now. For this the RSS feed is parsed.
-    // use this code: <a href="..."><span>New</span> This is the Link Name</a>
-    var rss_url = rss.getAttribute("href");
-    // TODO finish New-Flag
+    }
+    
+    if(top == window){
+        GM_xmlhttpRequest({
+             method: "GET",
+                url: rss.getAttribute("href"),
+            headers: {"User-Agent": "Mozilla/5.0 (compatible) Greasemonkey", "Accept": "text/xml"},
+             onload: parseRssFeed
+        });
+    }
 
 
 
@@ -194,12 +229,13 @@ var css = ''+
 'h1#logo a{color:red;text-decoration:none;text-shadow:0 0 20px #AAA;}'+
 'h1#logo a:hover{text-decoration:none;background:red;color:#FFF;padding:0 0.2em;margin:0 -0.2em;text-shadow:none;}'+
 
+'#header{margin-bottom:0;}'+
 '#header div#userdata{display:block;float:right;font-size:16px;margin-top:10px;padding:0;font-weight:bold;}'+
 '#header div#userdata span{margin-right:16px;}'+
 '#header div#userdata a{color:red;font-weight:bold;display:inline-block;width:120px;}'+
 '#header div#userdata a:hover{text-decoration:none;background:red;color:#FFF;padding:2px 0 2px 8px;margin:-2px 0 -2px -8px;}'+
 
-'#content h2#categoryHeader{color:#444;font-weight:bold;font-size:52px;line-height:1.5;font-family:Helvetica,sans-serif;letter-spacing:-2px;margin:0 50px;}'+
+'#content h2#categoryHeader{color:#444;font-weight:bold;font-size:52px;line-height:1.5;font-family:Helvetica,sans-serif;letter-spacing:-2px;margin:0 50px 30px;}'+
 '#content h2#categoryHeader span,h2#categoryHeader a{display:none}'+
 '#content h2#categoryHeader sup{-moz-border-radius:10px;background:#CCC;color:#FFF;font-weight:normal;letter-spacing:0;margin-left:-8px;padding:5px 8px 0;}'+
 '#content h2#categoryHeader div{display:inline-block;font-size:24px;line-height:1.5;font-family:Helvetica,sans-serif;letter-spacing:0;margin-left:40px;}'+
@@ -230,10 +266,11 @@ var css = ''+
 'div#bookmark_list .titleRow a.tableViewCellTitleLink span{-moz-border-radius:10px;background:#444;color:#FFF;padding:5px 10px 0;}'+
 'div#bookmark_list .titleRow div.summary{display:none;}'+
 'div#bookmark_list .secondaryControls{display:none;}'+
+
+'iframe{display:none;}'+
 '';
 
 attachCSS(css);
-
 
 
 

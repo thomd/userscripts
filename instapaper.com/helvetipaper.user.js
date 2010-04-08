@@ -59,6 +59,10 @@ var attachCSS = function(css){
 // DOM manipulation
 //
 ;(function(){
+
+    // do not run inside an iframe
+    if(top != window) return;
+    
     
     //
     // some helper nodes
@@ -75,13 +79,42 @@ var attachCSS = function(css){
     var folders_link = $x('//div[@id="folders"]//a')[0];
     var nav_links = $x('//h2[@id="categoryHeader"]/a');
     var rss = $x('//link[@rel="alternate"]')[0];
+    var footer = $x('//div[@id="footer"]/div')[0];
 
 
     // add footnote-asterisk to title
     title.appendChild(document.createTextNode(".*"));
-    title.setAttribute("href", location.href + "#footer");
+    title.setAttribute("href", location.href + "#bottom");
 
 
+    // remove footer hint
+    $x('//*[@id="left_column"]/div[last()]')[0].style.display="none";
+
+    // set new footer
+    var bottom = document.createElement("div");
+    bottom.setAttribute("id", "bottom");
+    bottom.appendChild(footer);
+
+    // extend footer with ads
+    bottom.firstChild.appendChild(document.createElement("br"));
+    var ad1 = document.createElement("a");
+    ad1.setAttribute("href", "http://www.github.com/thomd");
+    ad1.appendChild(document.createTextNode("* Helvetica Theme"));
+    bottom.firstChild.appendChild(ad1);
+    bottom.firstChild.appendChild(document.createTextNode(" 2010 by "));
+    var ad2 = document.createElement("a");
+    ad2.setAttribute("href", "http://thomd.net");
+    ad2.appendChild(document.createTextNode("thomd"));
+    bottom.firstChild.appendChild(ad2);
+    bottom.firstChild.appendChild(document.createTextNode(". Contact: "));
+    var ad3 = document.createElement("a");
+    ad3.setAttribute("href", "mailto:helvetipaper@thomd.net");
+    ad3.appendChild(document.createTextNode("helvetipaper@thomd.net"));
+    bottom.firstChild.appendChild(ad3);
+    bottom.firstChild.appendChild(document.createTextNode("."));
+    body.appendChild(bottom);
+
+    
     //
     // create userdata
     //
@@ -148,7 +181,7 @@ var attachCSS = function(css){
         var title = page.getAttribute("title");
         var url = document.createElement("div");
         url.setAttribute("class", "titleUrl");
-        url.appendChild(document.createTextNode(title + ":"));
+        url.appendChild(document.createTextNode(title));
         page.parentNode.insertBefore(url, page);
         
         // action links (edit, delete)
@@ -235,6 +268,7 @@ var css = ''+
 '#header div#userdata a{color:red;font-weight:bold;display:inline-block;width:120px;}'+
 '#header div#userdata a:hover{text-decoration:none;background:red;color:#FFF;padding:2px 0 2px 8px;margin:-2px 0 -2px -8px;}'+
 
+'#content{overflow:hidden;padding-top:10px;}'+
 '#content h2#categoryHeader{color:#444;font-weight:bold;font-size:52px;line-height:1.5;font-family:Helvetica,sans-serif;letter-spacing:-2px;margin:0 50px 30px;}'+
 '#content h2#categoryHeader span,h2#categoryHeader a{display:none}'+
 '#content h2#categoryHeader sup{-moz-border-radius:10px;background:#CCC;color:#FFF;font-weight:normal;letter-spacing:0;margin-left:-8px;padding:5px 8px 0;}'+
@@ -263,9 +297,16 @@ var css = ''+
 'div#bookmark_list .titleRow{width:100%;margin-left:-200px;padding:0;}'+
 'div#bookmark_list .titleRow a.tableViewCellTitleLink{font-weight:bold;font-size:36px;line-height:1.1;font-family:Helvetica,sans-serif;color:#444;width:none;margin-left:240px;display:block;}'+
 'div#bookmark_list .titleRow a.tableViewCellTitleLink:hover{text-decoration:none;}'+
+'div#bookmark_list .tableViewCell:hover .titleRow a.tableViewCellTitleLink{text-decoration:none;color:red;}'+
 'div#bookmark_list .titleRow a.tableViewCellTitleLink span{-moz-border-radius:10px;background:#444;color:#FFF;padding:5px 10px 0;}'+
 'div#bookmark_list .titleRow div.summary{display:none;}'+
 'div#bookmark_list .secondaryControls{display:none;}'+
+
+'div#footer{display:none;}'+
+'div#bottom{}'+
+'div#bottom div{margin:8em 0 10em 50px !important;}'+
+'div#bottom div a{color:red;text-decoration:none;}'+
+'div#bottom div a:hover{text-decoration:none;background:red;color:#FFF !important;padding:6px 12px;margin:-6px -12px;}'+
 
 'iframe{display:none;}'+
 '';

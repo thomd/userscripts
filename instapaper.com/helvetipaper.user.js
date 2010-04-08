@@ -84,7 +84,7 @@ var attachCSS = function(css){
 
     // add footnote-asterisk to title
     title.appendChild(document.createTextNode(".*"));
-    title.setAttribute("href", location.href + "#bottom");
+    title.setAttribute("href", "#bottom");
 
 
     // remove footer hint
@@ -129,6 +129,43 @@ var attachCSS = function(css){
 
 
     //
+    // put page URL on top of link and reposition controls
+    //
+    var links = $x('//div[@id="bookmark_list"]//div[starts-with(@id,"tableViewCell")]');
+    for(i in links){
+        var link = links[i];
+
+        // page URL
+        var page = $x('.//*[@class="titleRow"]/a', link)[0];
+        var title = page.getAttribute("title");
+        var url = document.createElement("div");
+        url.setAttribute("class", "titleUrl");
+        url.appendChild(document.createTextNode(title));
+        page.parentNode.insertBefore(url, page);
+        
+        // action links (edit, delete)
+        var edit = $x('.//*[@class="secondaryControls"]/a[position()=1]', link)[0];
+        var del = $x('.//*[@class="secondaryControls"]/a[last()]', link)[0];
+        var controls = $x('.//*[@class="cornerControls"]', link)[0];
+        controls.appendChild(edit);
+        controls.appendChild(del);
+    }
+    
+
+
+
+        // TODO replace stars with Unicode Character 'BLACK STAR' (U+2605)
+    //    var stars = $x('//div[@id="bookmark_list"]//a[@class="starToggleUnstarred"]');
+    //    for(star in stars){
+    //        stars[star].innerHTML = "&#x2605;";
+    //    }
+
+
+
+
+
+
+    //
     // create category links
     //
 
@@ -170,42 +207,7 @@ var attachCSS = function(css){
 
 
     //
-    // put page URL on top of link and reposition controls
-    //
-    var links = $x('//div[@id="bookmark_list"]//div[starts-with(@id,"tableViewCell")]');
-    for(i in links){
-        var link = links[i];
-
-        // page URL
-        var page = $x('.//*[@class="titleRow"]/a', link)[0];
-        var title = page.getAttribute("title");
-        var url = document.createElement("div");
-        url.setAttribute("class", "titleUrl");
-        url.appendChild(document.createTextNode(title));
-        page.parentNode.insertBefore(url, page);
-        
-        // action links (edit, delete)
-        var edit = $x('.//*[@class="secondaryControls"]/a[position()=1]', link)[0];
-        var del = $x('.//*[@class="secondaryControls"]/a[last()]', link)[0];
-        var controls = $x('.//*[@class="cornerControls"]', link)[0];
-        controls.appendChild(edit);
-        controls.appendChild(del);
-    }
-    
-
-
-
-    // TODO replace stars with Unicode Character 'BLACK STAR' (U+2605)
-//    var stars = $x('//div[@id="bookmark_list"]//a[@class="starToggleUnstarred"]');
-//    for(star in stars){
-//        stars[star].innerHTML = "&#x2605;";
-//    }
-
-
-
-
-    //
-    // put a New flag on the links from within the last week. 
+    // put a 'New'-flag on the links from within the last week. 
     // For this the RSS feed is parsed.
     //
 	var oneWeek = 1000*60*60*24*7;
@@ -258,7 +260,7 @@ var css = ''+
 'body{background-color:#FFF;color:#444;font-weight:bold;font-size:12px;line-height:1.5;font-family:Helvetica,sans-serif;width:100% !important;margin:0;padding:0;}'+
 '#header div{display:none;}'+
 
-'h1#logo{font-weight:bold;font-size:144px;line-height:1;font-family:Helvetica,sans-serif;border:none;letter-spacing:-6px;margin:0;padding:40px 50px;}'+
+'h1#logo{font-weight:bold;font-size:144px;line-height:1;font-family:Helvetica,sans-serif;border:none;letter-spacing:-6px;margin:0;padding:40px 100px;}'+
 'h1#logo a{color:red;text-decoration:none;text-shadow:0 0 20px #AAA;}'+
 'h1#logo a:hover{text-decoration:none;background:red;color:#FFF;padding:0 0.2em;margin:0 -0.2em;text-shadow:none;}'+
 
@@ -269,7 +271,7 @@ var css = ''+
 '#header div#userdata a:hover{text-decoration:none;background:red;color:#FFF;padding:2px 0 2px 8px;margin:-2px 0 -2px -8px;}'+
 
 '#content{overflow:hidden;padding-top:10px;}'+
-'#content h2#categoryHeader{color:#444;font-weight:bold;font-size:52px;line-height:1.5;font-family:Helvetica,sans-serif;letter-spacing:-2px;margin:0 50px 30px;}'+
+'#content h2#categoryHeader{color:#444;font-weight:bold;font-size:52px;line-height:1.5;font-family:Helvetica,sans-serif;letter-spacing:-2px;margin:0 100px 30px;}'+
 '#content h2#categoryHeader span,h2#categoryHeader a{display:none}'+
 '#content h2#categoryHeader sup{-moz-border-radius:10px;background:#CCC;color:#FFF;font-weight:normal;letter-spacing:0;margin-left:-8px;padding:5px 8px 0;}'+
 '#content h2#categoryHeader div{display:inline-block;font-size:24px;line-height:1.5;font-family:Helvetica,sans-serif;letter-spacing:0;margin-left:40px;}'+
@@ -294,7 +296,7 @@ var css = ''+
 'div#bookmark_list .titleUrl{font-weight:bold;font-size:36px;line-height:1.1;font-family:Helvetica,sans-serif;color:#CCC;width:none;margin:10px 0 0 240px;display:block;}'+
 'div#bookmark_list .tableViewCell:hover .titleUrl{color:#F9F9F9}'+
 'div#bookmark_list .tableViewCell:hover .cornerControls .actionLink{color:red !important;}'+
-'div#bookmark_list .titleRow{width:100%;margin-left:-200px;padding:0;}'+
+'div#bookmark_list .titleRow{width:100%;margin-left:-150px;padding:0;}'+
 'div#bookmark_list .titleRow a.tableViewCellTitleLink{font-weight:bold;font-size:36px;line-height:1.1;font-family:Helvetica,sans-serif;color:#444;width:none;margin-left:240px;display:block;}'+
 'div#bookmark_list .titleRow a.tableViewCellTitleLink:hover{text-decoration:none;}'+
 'div#bookmark_list .tableViewCell:hover .titleRow a.tableViewCellTitleLink{text-decoration:none;color:red;}'+
@@ -304,7 +306,7 @@ var css = ''+
 
 'div#footer{display:none;}'+
 'div#bottom{}'+
-'div#bottom div{margin:8em 0 10em 50px !important;}'+
+'div#bottom div{margin:12em 0 4em 100px !important;}'+
 'div#bottom div a{color:red;text-decoration:none;}'+
 'div#bottom div a:hover{text-decoration:none;background:red;color:#FFF !important;padding:6px 12px;margin:-6px -12px;}'+
 

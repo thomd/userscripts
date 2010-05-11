@@ -5,9 +5,9 @@
 // @include       http://*.backpackit.com/*
 // @include       https://*.backpackit.com/*
 // @author        Thomas Duerr
-// @version       0.8
-// @date          2009-03-25
-// @change        layout bugfix for newsroom page.
+// @version       0.8.1
+// @date          2010-05-11
+// @change        changed url for script-updater-check and increased check interval to limit unnecessary server load on userscripts.org
 // ==/UserScript==
 
 
@@ -194,14 +194,15 @@ if(state == "more") showMore();
 
 //
 // ChangeLog
-// 2008-04-21 - 0.1 - created
-// 2008-06-15 - 0.2 - store viewport state
-// 2008-06-17 - 0.3 - update metadata
-// 2009-01-08 - 0.4 - bugfix due to the new reorderable sidebar links
-// 2009-02-09 - 0.5 - bugfix due to new color scheme feature
-// 2009-02-11 - 0.6 - integration of userscripts update notification
-// 2009-02-11 - 0.7 - bugfix: width was not correct calculated when missing scrollbar
-// 2009-03-25 - 0.8 - layout bugfix for newsroom page
+// 2008-04-21 - 0.1   - created
+// 2008-06-15 - 0.2   - store viewport state
+// 2008-06-17 - 0.3   - update metadata
+// 2009-01-08 - 0.4   - bugfix due to the new reorderable sidebar links
+// 2009-02-09 - 0.5   - bugfix due to new color scheme feature
+// 2009-02-11 - 0.6   - integration of userscripts update notification
+// 2009-02-11 - 0.7   - bugfix: width was not correct calculated when missing scrollbar
+// 2009-03-25 - 0.8   - layout bugfix for newsroom page
+// 2010-05-11 - 0.8.1 - changed url for script-updater-check and increased check interval to limit unnecessary server load on userscripts.org.
 //
 
 
@@ -239,7 +240,7 @@ var userscriptUpdater = function(){
     var checkRemoteUserscript = function(){
         GM_xmlhttpRequest({
             method:  "GET",
-            url:     "http://userscripts.org/scripts/review/" + config.scriptId + "?format=txt",
+            url:     "http://userscripts.org/scripts/source/" + config.scriptId + ".meta.js",
             headers: {"User-agent": "Mozilla/4.0 (compatible) Greasemonkey", "Accept": "text/plain"},
             onload:  function(resp) {
                 GM_setValue("lastCheck", currentTime);
@@ -325,6 +326,6 @@ var userscriptUpdater = function(){
 // initialize updater
 userscriptUpdater.init({
     scriptId:       "28226",
-    currentVersion: "0.8",
+    currentVersion: "0.8.1",
     injectInto:     $e("Main")
 });

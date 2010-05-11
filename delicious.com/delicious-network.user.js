@@ -7,9 +7,9 @@
 // @include       http://delicious.com/*
 // @include       http://*.delicious.com/*
 // @author        Thomas Duerr
-// @version       0.4
-// @date          2010-01-26
-// @change        minor bugfix due to a changed html-structure. network info shows now again correct number of friends und users in own network.
+// @version       0.4.1
+// @date          2010-05-11
+// @change        changed url for script-updater-check and increased check interval to limit unnecessary server load on userscripts.org.
 // ==/UserScript==
 
 
@@ -93,10 +93,11 @@ var addFans = function(fans){
 
 //
 // ChangeLog
-// 2008-03-06 - 0.1 - created
-// 2008-08-01 - 0.2 - support for new delicious-relaunch
-// 2009-03-28 - 0.3 - userscript updater added
-// 2010-01-26 - 0.4 - changed html-structure needs other xpath for parsing username
+// 2008-03-06 - 0.1   - created
+// 2008-08-01 - 0.2   - support for new delicious-relaunch
+// 2009-03-28 - 0.3   - userscript updater added
+// 2010-01-26 - 0.4   - changed html-structure needs other xpath for parsing username
+// 2010-05-11 - 0.4.1 - changed url for script-updater-check and increased check interval to limit unnecessary server load on userscripts.org
 
 
 
@@ -134,7 +135,7 @@ var userscriptUpdater = function(){
     var checkRemoteUserscript = function(){
         GM_xmlhttpRequest({
             method:  "GET",
-            url:     "http://userscripts.org/scripts/review/" + config.scriptId + "?format=txt",
+            url:     "http://userscripts.org/scripts/source/" + config.scriptId + ".meta.js",
             headers: {"User-agent": "Mozilla/4.0 (compatible) Greasemonkey", "Accept": "text/plain"},
             onload:  function(resp) {
                 GM_setValue("lastCheck", currentTime);
@@ -224,6 +225,6 @@ var userscriptUpdater = function(){
 // initialize updater
 userscriptUpdater.init({
     scriptId:       "23576",
-    currentVersion: "0.4",
+    currentVersion: "0.4.1",
     injectInto:     document.getElementById("pagetitle")
 });

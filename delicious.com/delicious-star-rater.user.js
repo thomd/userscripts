@@ -7,9 +7,9 @@
 // @include       http://delicious.com/*
 // @include       http://*.delicious.com/*
 // @author        Thomas Duerr
-// @version       0.10
-// @date          2009-08-04
-// @change        minor layout bugfix due to new feature for sending links.
+// @version       0.10.1
+// @date          2010-05-11
+// @change        changed url for script-updater-check and increased check interval to limit unnecessary server load on userscripts.org.
 // ==/UserScript==
 
 
@@ -380,16 +380,17 @@ if(document.getElementById("newitem")){
 
 //
 // ChangeLog
-// 2008-11-02 - 0.1 -  created
-// 2008-11-10 - 0.2 -  refactoring: rating is now implemented with module-pattern (singleton).
-// 2008-11-12 - 0.3 -  problems with module-pattern fixed (delicious allowes multi inline-edits).
-// 2008-11-14 - 0.4 -  rating is now possible in inline-edit mode.
-// 2008-11-20 - 0.5 -  edit form shows now a remove-link if there is already a reating.
-// 2009-01-04 - 0.6 -  correct height of posting popup to make complete tag list visible.
-// 2009-02-23 - 0.7 -  integration of userscripts update notification.
-// 2009-02-24 - 0.8 -  highlighting of rated bookmarks is now optional.
-// 2009-03-27 - 0.9 -  minor layout bugfix for flickr bookmarks.
-// 2009-08-04 - 0.10 - minor layout bugfix due to new feature for sending links.
+// 2008-11-02 - 0.1    - created
+// 2008-11-10 - 0.2    - refactoring: rating is now implemented with module-pattern (singleton).
+// 2008-11-12 - 0.3    - problems with module-pattern fixed (delicious allowes multi inline-edits).
+// 2008-11-14 - 0.4    - rating is now possible in inline-edit mode.
+// 2008-11-20 - 0.5    - edit form shows now a remove-link if there is already a reating.
+// 2009-01-04 - 0.6    - correct height of posting popup to make complete tag list visible.
+// 2009-02-23 - 0.7    - integration of userscripts update notification.
+// 2009-02-24 - 0.8    - highlighting of rated bookmarks is now optional.
+// 2009-03-27 - 0.9    - minor layout bugfix for flickr bookmarks.
+// 2009-08-04 - 0.10   - minor layout bugfix due to new feature for sending links.
+// 2010-05-11 - 0.10.1 - changed url for script-updater-check and increased check interval.
 
 
 
@@ -426,7 +427,7 @@ var userscriptUpdater = function(){
     var checkRemoteUserscript = function(){
         GM_xmlhttpRequest({
             method:  "GET",
-            url:     "http://userscripts.org/scripts/review/" + config.scriptId + "?format=txt",
+            url:     "http://userscripts.org/scripts/source/" + config.scriptId + ".meta.js",
             headers: {"User-agent": "Mozilla/4.0 (compatible) Greasemonkey", "Accept": "text/plain"},
             onload:  function(resp) {
                 GM_setValue("lastCheck", currentTime);
@@ -516,6 +517,6 @@ var userscriptUpdater = function(){
 // initialize updater
 userscriptUpdater.init({
     scriptId:       "36457",
-    currentVersion: "0.10",
+    currentVersion: "0.10.1",
     injectInto:     document.getElementById("pagetitle")
 });

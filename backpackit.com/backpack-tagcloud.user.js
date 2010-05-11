@@ -5,9 +5,9 @@
 // @include       http://*.backpackit.com/*
 // @include       https://*.backpackit.com/*
 // @author        Thomas Duerr
-// @version       0.3
-// @date          2009-03-27
-// @change        bugfixing due to changed DOM
+// @version       0.3.1
+// @date          2010-05-11
+// @change        changed url for script-updater-check and increased check interval to limit unnecessary server load on userscripts.org.
 // ==/UserScript==
 
 
@@ -234,9 +234,10 @@ var buildTagList = function(sort){
 
 //
 // ChangeLog
-// 2008-06-18 - 0.1 - created
-// 2008-09-02 - 0.2 - sort tags by alpha or by count
-// 2009-03-27 - 0.3 - bugfixing due to changed DOM
+// 2008-06-18 - 0.1   - created
+// 2008-09-02 - 0.2   - sort tags by alpha or by count
+// 2009-03-27 - 0.3   - bugfixing due to changed DOM
+// 2010-05-11 - 0.3.1 - changed url for script-updater-check and increased check interval to limit unnecessary server load on userscripts.org.
 //
 
 
@@ -274,7 +275,7 @@ var userscriptUpdater = function(){
     var checkRemoteUserscript = function(){
         GM_xmlhttpRequest({
             method:  "GET",
-            url:     "http://userscripts.org/scripts/review/" + config.scriptId + "?format=txt",
+            url:     "http://userscripts.org/scripts/source/" + config.scriptId + ".meta.js",
             headers: {"User-agent": "Mozilla/4.0 (compatible) Greasemonkey", "Accept": "text/plain"},
             onload:  function(resp) {
                 GM_setValue("lastCheck", currentTime);
@@ -360,6 +361,6 @@ var userscriptUpdater = function(){
 // initialize updater
 userscriptUpdater.init({
     scriptId:       "29102",
-    currentVersion: "0.3",
+    currentVersion: "0.3.1",
     injectInto:     document.getElementById("Main")
 });

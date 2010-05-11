@@ -4,8 +4,8 @@
 // @description   copy-paste this updater script snippet at the end of your userscript file hosted on userscripts.org. Your script is now displaying update notifications the next time you upload a new version of your script.
 // @include       http://domain-name.tld/*
 // @author        Thomas Duerr
-// @version       1.0.1
-// @date          2009-03-27
+// @version       1.0.2
+// @date          2010-05-11
 // ==/UserScript==
 
 
@@ -144,7 +144,7 @@ var userscriptUpdater = function(){
     var checkRemoteUserscript = function(){
         GM_xmlhttpRequest({
             method:  "GET",
-            url:     "http://userscripts.org/scripts/review/" + config.scriptId + "?format=txt",
+            url:     "http://userscripts.org/scripts/source/" + config.scriptId + ".meta.js",
             headers: {"User-agent": "Mozilla/4.0 (compatible) Greasemonkey", "Accept": "text/plain"},
             onload:  function(resp) {
                 GM_setValue("lastCheck", currentTime);
@@ -253,5 +253,6 @@ userscriptUpdater.init({
 // 2009-03-24 - 0.4   - included deprication-message
 // 2009-03-25 - 1.0   - first final release
 // 2009-03-27 - 1.0.1 - minor fixes
+// 2010-05-11 - 1.0.2 - changed url for script-updater-check and increased check interval to limit unnecessary server load on userscripts.org
 //
 

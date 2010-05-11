@@ -103,13 +103,9 @@ For this you may use for example this set of CSS selectors:
 
 Copy [helvetica.css](http://github.com/thomd/userscripts/raw/master/userscript-updater/themes/helvetica.css "helvetica.css") into `updaterCss`.
 
-![Helvetica Theme](http://github.com/thomd/userscripts/raw/master/userscript-updater/themes/helvetica.png "Helvetica Theme")
-
 ### Red-Alert Theme
 
 Copy [red-alert.css](http://github.com/thomd/userscripts/raw/master/userscript-updater/themes/red-alert.css "red-alert.css") into `updaterCss`.
-
-![Red-Alert Theme](http://github.com/thomd/userscripts/raw/master/userscript-updater/themes/red-alert.png "Red-Alert Theme")
 
 
 License

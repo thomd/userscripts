@@ -254,7 +254,7 @@ var userscriptUpdater = function(){
               "div.greasemonkey_updater p { margin: 0 0 15px 0; font-size: 12px !important; line-height: 140%; color: #000; }";
 
     var config      = {
-        checkInterval: 86400,                                     // default check interval: check once a day [in seconds]
+        checkInterval: 604800,                                    // default check interval: check once a day [in seconds]
         injectInto:    document.getElementsByTagName("body")[0],  // default dom-node for the updater-message to be inserted
         updaterCss:    css                                        // default styles of updater message
     };

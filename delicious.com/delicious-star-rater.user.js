@@ -2,15 +2,12 @@
 // @name          delicious star rater
 // @namespace     http://thomd.net/userscript
 // @description   Rate your most favourite bookmarks on delicious.com with stars. Rated bookmarks will be highlighted within the bookmarks list for easy recognition.
-// @include       http://del.icio.us/*
-// @include       http://*.del.icio.us/*
 // @include       http://delicious.com/*
 // @include       http://*.delicious.com/*
 // @author        Thomas Duerr
 // @version       0.11
 // @date          2010-09-29
 // @change        new highlight color 
-// @change        changed url for script-updater-check and increased check interval to limit unnecessary server load on userscripts.org.
 // ==/UserScript==
 
 

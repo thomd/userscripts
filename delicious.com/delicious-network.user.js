@@ -7,9 +7,9 @@
 // @include       http://delicious.com/*
 // @include       http://*.delicious.com/*
 // @author        Thomas Duerr
-// @version       0.4.1
-// @date          2010-05-11
-// @change        changed url for script-updater-check and increased check interval to limit unnecessary server load on userscripts.org.
+// @version       0.5
+// @date          2010-09-29
+// @change        fixed xpath for parsing of user due to changed html structure.
 // ==/UserScript==
 
 
@@ -33,7 +33,7 @@ function $o2a(o){
 
 
 // get username
-var user = $x("id('globalnav')/li/strong/a")[0].textContent;
+var user = $x("id('globalnav')//li/strong/a")[0].textContent;
 
 if(user != null){
 
@@ -98,6 +98,7 @@ var addFans = function(fans){
 // 2009-03-28 - 0.3   - userscript updater added
 // 2010-01-26 - 0.4   - changed html-structure needs other xpath for parsing username
 // 2010-05-11 - 0.4.1 - changed url for script-updater-check and increased check interval to limit unnecessary server load on userscripts.org
+// 2010-09-29 - 0.5   - fixed xpath for parsing of user due to changed html structure.
 
 
 
@@ -225,6 +226,6 @@ var userscriptUpdater = function(){
 // initialize updater
 userscriptUpdater.init({
     scriptId:       "23576",
-    currentVersion: "0.4.1",
+    currentVersion: "0.5",
     injectInto:     document.getElementById("pagetitle")
 });

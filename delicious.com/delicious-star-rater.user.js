@@ -7,8 +7,9 @@
 // @include       http://delicious.com/*
 // @include       http://*.delicious.com/*
 // @author        Thomas Duerr
-// @version       0.10.1
-// @date          2010-05-11
+// @version       0.11
+// @date          2010-09-29
+// @change        new highlight color 
 // @change        changed url for script-updater-check and increased check interval to limit unnecessary server load on userscripts.org.
 // ==/UserScript==
 
@@ -59,27 +60,20 @@ var StarRater = function(type){
     var currentRating = 0;
 
     // styles for bookmark highlighting
-    var css_highlight  = "ul.bookmarks li.post .bookmark {padding:4px 0 2px 4px;}";
-        css_highlight += "ul.bookmarks li.post .flickr {min-height:85px; padding-left:95px;}";
-        css_highlight += "ul.bookmarks .star {background: #FFFFDB;}";
-        css_highlight += "ul.bookmarks .star div.data h4 {font-weight: bold;}";
-        css_highlight += "ul.bookmarks .star div.data div.description {font-weight: bold;}";
-        css_highlight += "ul.bookmarks .star ul.tag-chain li.off a span {background: #FF8;}";
-        css_highlight += "ul.bookmarks .star ul.tag-chain li.off a:hover span {background: #6C6C6C;}";
-        css_highlight += "ul.bookmarks .star ul.tag-chain li.off a {background-color: transparent; background-repeat: no-repeat; ";
-        css_highlight += "background-position: 0 -12px; background-image: url(data:image/gif;base64,R0lGODlhEwBQAMQTAP7+6/j4+P//0";
-        css_highlight += "v39sXp6eqSkpMfHx3Nzc4iIiJ2dnbKysrm5uZaWloGBgc7OzsDAwP//iGxsbP///////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-        css_highlight += "AAAAAAAAAAAAACH5BAEAABMALAAAAAATAFAAAAWg4CSOZGmeaKqubOu+cCzPdC0GkgAHAPQCOZ+LBxGygINiCygoGlWBQFK5wjWdLKL";
-        css_highlight += "ziYpOqSqAFhwOksO9c4qpXku51R6Maavb7/i8fs/v+/+AgYIyEhIFES8SDhGILYUIjC4SD4yNK4UElSyFh5qXAQeVliiFDKKjJxIGp6";
-        css_highlight += "gmmKebC7CXEpCel6u3lwm6KoWhrSkSCpGSEg3Bg8rLzM0xIQA7);}";
-        css_highlight += "ul.bookmarks .star ul.tag-chain li.off a:hover {background-position: 0 -52px;}";
+    var css_highlight  = "ul.bookmarks li.post .bookmark{padding:4px 0 2px 4px;}";
+        css_highlight += "ul.bookmarks li.post .flickr{min-height:85px;padding-left:95px;}";
+        css_highlight += "ul.bookmarks .star{background: #EFF7FF;}";
+        css_highlight += "ul.bookmarks .star div.data h4{font-weight:bold;}";
+        css_highlight += "ul.bookmarks .star div.data div.description{font-weight:bold;}";
+        css_highlight += "ul.bookmarks .star ul.tag-chain li.off a{color:#333;background:#DFEFFF;}";
+        css_highlight += "ul.bookmarks .star ul.tag-chain li.off:hover a{color:#FFF;background:#1259C7;}";
         css_highlight += "#actions-list li #sidebar-actions-highlight {background-color: transparent; background-repeat: no-repeat; ";
         css_highlight += "background-position: 6px -1px; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAA";
         css_highlight += "AQCAYAAADJViUEAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAALZJREFUeNpiNCq5yIAHGADxBWwSZ7v1GJjwaB";
         css_highlight += "QA4gX4TManOQCI9aGGkKUZmSZJswMhzSzQQEFXoADE/EiGNGDR28ACDU2Q5nocFvCjyX0E4gRkZ4NMDoRK4AMXoS7dgO7nDVAJXBE/ES";
         css_highlight += "r/AFeAgSQO4NB8gJjQDiAQdTg1g5wlD2UvBGJHJG84ENKcAA20RCj7AFTTQqihBujxjB6/DmiZ4QOSQQHIcoz///9nIBcwMVAAAAIMAG";
         css_highlight += "CGI2SpweGIAAAAAElFTkSuQmCC); outline: none;}";
-        css_highlight += "#sidebar { margin-top: 20px; }";
+        css_highlight += "#sidebar {margin-top: 20px;}";
 
     // styles for rater component
     var css_rater  = ".inlineeditor .ratingfield {height: 3em !important;}";
@@ -391,7 +385,7 @@ if(document.getElementById("newitem")){
 // 2009-03-27 - 0.9    - minor layout bugfix for flickr bookmarks.
 // 2009-08-04 - 0.10   - minor layout bugfix due to new feature for sending links.
 // 2010-05-11 - 0.10.1 - changed url for script-updater-check and increased check interval.
-
+// 2010-09-29 - 0.11   - new highlight color
 
 
 
@@ -517,6 +511,6 @@ var userscriptUpdater = function(){
 // initialize updater
 userscriptUpdater.init({
     scriptId:       "36457",
-    currentVersion: "0.10.1",
+    currentVersion: "0.11",
     injectInto:     document.getElementById("pagetitle")
 });
